@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetProjects.WpfToolkit.DataVisualization" Version="6.0.90" />
+    <PackageReference Include="Extreme.Numerics" Version="8.0.13" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
+    <PackageReference Include="MvvmLight" Version="5.4.1.1" />
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+    <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
+    <PackageReference Include="OxyPlot.Wpf" Version="2.0.0" />
+    <PackageReference Include="System.Security.Permissions" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SciChart.Charting">
+      <HintPath>C:\Program Files (x86)\SciChart\SciChart SDK\Lib\netcoreapp3.1\SciChart.Charting.dll</HintPath>
+    </Reference>
+    <Reference Include="SciChart.Charting.DrawingTools">
+      <HintPath>C:\Program Files (x86)\SciChart\SciChart SDK\Lib\netcoreapp3.1\SciChart.Charting.DrawingTools.dll</HintPath>
+    </Reference>
+    <Reference Include="SciChart.Charting3D">
+      <HintPath>C:\Program Files (x86)\SciChart\SciChart SDK\Lib\netcoreapp3.1\SciChart.Charting3D.dll</HintPath>
+    </Reference>
+    <Reference Include="SciChart.Core">
+      <HintPath>C:\Program Files (x86)\SciChart\SciChart SDK\Lib\netcoreapp3.1\SciChart.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SciChart.Data">
+      <HintPath>C:\Program Files (x86)\SciChart\SciChart SDK\Lib\netcoreapp3.1\SciChart.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="SciChart.Drawing">
+      <HintPath>C:\Program Files (x86)\SciChart\SciChart SDK\Lib\netcoreapp3.1\SciChart.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="SciChart.Drawing.DirectX">
+      <HintPath>C:\Program Files (x86)\SciChart\SciChart SDK\Lib\netcoreapp3.1\SciChart.Drawing.DirectX.dll</HintPath>
+    </Reference>
+    <Reference Include="SciChart.Examples.ExternalDependencies">
+      <HintPath>C:\Program Files (x86)\SciChart\SciChart SDK\Lib\netcoreapp3.1\SciChart.Examples.ExternalDependencies.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
