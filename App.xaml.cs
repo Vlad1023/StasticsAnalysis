@@ -21,7 +21,7 @@ namespace EMPI_Proj
 
             InitializeComponent();
             // Set this code once in App.xaml.cs or application startup
-            SciChartSurface.SetRuntimeLicenseKey("9ljUOSSE7uWHQVtpsmr0XmjDA1AtaAY7ic8kwDkM6b6Hy7NMU8wIk7lWs0RwmIAAVTtT9/dTiBpqD8AV98LbHfcRq6miiECXlXDR3Qze37dOge03OsB4nCBdZXfc6F3nLaMgqH8IXPzukL1ChBpYXcM4YmIwjLzeK9OSIf6zX5/Eru6V8RBQGfsjeUQ7QoU4vZkyeY0BqSBp7FdG3Ans/jTV4Fd0BY6TtHFgSRDKNT1Jt613N9LDzZ7GP0QgaqEexF0O4hzCiuXYSqcqoAKn+rvcfAwaVtaOKT8g3g9XhnKCn0z0w6tNkrxgMtrKcTobEE7jR2S/fC/d6KDFxtP9AhJ9YpcfCTnnxwusUa4l5ABAgct1NJhddHeY1M3Tglm44rTY6cK0j41/xYfiA5WlFsRQN3QvxBWdlwzarFHVSJnQtYTcvvjlJw5/0Ev4EemHToQUvb7HeSTb5HU7szqzefK931NPJAR7WcIVHj8BhAqaxHfvaSkbz64L0hJLK/kRX9F+GSDNuKpQ4D6U6Z68GSRkRf8DUcCs+7IGrtcpPwVSZEjG0dmCsG0sY1Nyc1dvNq2AetR3QZ8l");
+            SciChartSurface.SetRuntimeLicenseKey("V/HU/EegcKubvkRGaOOV3S1u3Sa8QmeHLHQr297mKHNbydw84yLYcDK99WFGk+uG7wIZEjsbK65wk0VpCGo0+r5UippkCwewYbMVNA7FLUZ1Lvc4Xf+Dhbvuj+wdhHbXhGTgkjhZXs+XuGLS8K8KDxDz6FzvEJ49lmrQIj6K9zhfTDu6DR0qijZa8YTv0tscost3hNRaPPoK5y6mBRbJRMFaD3ydt/toH8geVXqE+hWQP0srqSkzHioidS81SjIsj2tbXyhU8E5YRLocBYrIDc6pl9EyVOJzz+N7/d1rAZF+UXNeVg3JGbwph4gM+Z66PAKt6XtmRfPlydDfm9oiIbOzgBZ24mO/nh5LxDW+jJSmMNc1HQh8drhB5blDl7BoDSzYi/dhaITTRT/ImwzIkQWN9QmFKxfmYmDjjSriRmtgCMbRIVqgT29gLgw39RcH9auh+PFRtDuZ6oMhr4OVH9122/tTko/W9ZpqoN8g4Cb2AX5rdYsAqPCgP4yN1DzHQdIISmHyU/Nb2rbzg37Z/9I758OLlZSipRLUK+sTGGkRPJNrqgT64LktD8B4wxXyXBU=");
         }
 
         //private void App_DispatcherUnhandledException(object sender,

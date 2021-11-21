@@ -24,6 +24,11 @@ namespace EMPI_Proj.Models
             get { return index; }
         }
 
+        public IEnumerable<double>  GetRawDataDistinct()
+        {
+            return rawDataDistinct;
+        }
+
         public double Value
         {
             get { return value; }
@@ -50,6 +55,11 @@ namespace EMPI_Proj.Models
                 relativeFrequency = value;
                 OnPropertyChanged("RelativeFrequency");
             }
+        }
+
+        public double RelFreq()
+        {
+            return relativeFrequency;
         }
 
         public double EmpFunctionResult

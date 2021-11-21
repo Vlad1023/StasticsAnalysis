@@ -22,7 +22,7 @@ namespace EMPI_Proj.Models
         {
             this.dataFirstPoints = dataFirstPoints;
             if (NumberOfIntervals <= 0)
-                this.MParametr = Convert.ToInt32(1 + 3.32 * Math.Log10(dataFirstPoints.Count()));
+                this.MParametr = Convert.ToInt32(1 + 3.32 * Math.Log10(dataFirstPoints.Count() - 1));
             else
                 this.MParametr = NumberOfIntervals;
             this.minValue = this.dataFirstPoints.Select(el => el.Value).Min();
@@ -61,9 +61,13 @@ namespace EMPI_Proj.Models
                      .Where(condition)
                      .Select(el => el.Frequency)
                          .Aggregate((x, y) => x + y);
+                    //relativeClassFrequency = this.dataFirstPoints
+                    //  .Where(condition)
+                    //  .Select(el => el.RelFreq())
+                    //     .Aggregate((x, y) => x + y);
                     relativeClassFrequency = this.dataFirstPoints
                       .Where(condition)
-                      .Select(el => el.RelativeFrequency)
+                      .Select(el => el.RelFreq())
                          .Aggregate((x, y) => x + y);
                     currentEmpFunctionResult += relativeClassFrequency;
                 }
@@ -126,21 +130,21 @@ namespace EMPI_Proj.Models
             get { return index; }
         }
 
-        public string Values => String.Format($"({lowBorder} ; {upperBorder})");
+        public string Values => String.Format($"({Math.Round(lowBorder,3)} ; {Math.Round(upperBorder,3)})");
 
         public double Frequency
         {
-            get { return frequency; }
+            get { return Math.Round(frequency,3); }
         }
 
         public double RelativeFrequency
         {
-            get { return relativeFrequency; }
+            get { return Math.Round(relativeFrequency,3); }
         }
 
         public double EmpFunctionResult
         {
-            get { return empFunctionResult; }
+            get { return Math.Round(empFunctionResult,3); }
         }
     }
 }

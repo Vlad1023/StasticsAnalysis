@@ -27,17 +27,26 @@ namespace EMPI_Proj
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<DataFirstPoint> dataFirstPoints;
+        private IEnumerable<DataFirstPoint> dataFirstPoints;
         private IEnumerable<DataSecondPoint> dataSecondPoints;
         private IEnumerable<DataThirdPointViewModel> dataParameters;
+
+        private IEnumerable<AnomalyPointViewModel> anomalies;
+        private DistributionIdentifier distributionIdentifier;
+
+        private PlotModel scatterModel;
+        private double errorForAnomalies = 0.01;
 
         private Visibility _isFirstPointVisible = Visibility.Visible;
         private Visibility _isSecondPointVisible = Visibility.Collapsed;
         private Visibility _isThirdPointVisible = Visibility.Collapsed;
         private Visibility _isFourthPointVisible = Visibility.Collapsed;
+        private Visibility _isFivthPointVisible = Visibility.Collapsed;
+        private Visibility _isSixPointVisible = Visibility.Collapsed;
         private PlotModel histogramModel;
         private string numberOfClasses;
         private string width;
+        private string fileName = "Null";
         private double currentLengthOfClass;
 
         public MainWindowViewModel()
@@ -47,6 +56,9 @@ namespace EMPI_Proj
             OpenSecondPointDataCommand = new RelayCommand(LoadSecondPoint);
             OpenThirdPointDataCommand = new RelayCommand(LoadThirdPoint);
             OpenFourthPointDataCommand = new RelayCommand(LoadFourthPoint);
+            OpenFifthPointDataCommand = new RelayCommand(LoadFifthPoint);
+            DeleteAnomaliesDataCommand = new RelayCommand(DeleteAnomalies);
+            OpenSixPointDataCommand = new RelayCommand(LoadSixPoint);
             HandleRawDataProcess();
 
         }
@@ -55,21 +67,41 @@ namespace EMPI_Proj
         public ICommand OpenSecondPointDataCommand { get; set; }
         public ICommand OpenThirdPointDataCommand { get; set; }
         public ICommand OpenFourthPointDataCommand { get; set; }
-        public ObservableCollection<DataFirstPoint> DataFirstPoints
+        public ICommand OpenFifthPointDataCommand { get; set; }
+        public ICommand DeleteAnomaliesDataCommand { get; set; }
+        public ICommand OpenSixPointDataCommand { get; set; }
+        public IEnumerable<DataFirstPoint> DataFirstPoints
         {
             get { return dataFirstPoints; }
             private set
             {
-                dataFirstPoints = value;
-                if (dataFirstPoints.Count > 0)
+                dataFirstPoints = value.OrderBy(el => el.Value).ToList();
+                if (dataFirstPoints.Count() > 0)
                 {
                     var DataSecondPointsWrapper = new DataSecondPointWrapper(Convert.ToInt32(numberOfClasses), dataFirstPoints);
                     this.currentLengthOfClass = DataSecondPointsWrapper.LengthOfClass;
 
                     DataSecondPoints = DataSecondPointsWrapper.DataSecondPoints;
                     DataParameters = new DataThirdPoint(dataFirstPoints).DataThirdPoints;
-                }            
+
+                    var dataFourthPoint = new DataFourthPoint(dataFirstPoints, errorForAnomalies);
+
+                    AnomalyPointsViewModel = dataFourthPoint.Anomalies;
+                    ScatterAllDataModel = dataFourthPoint.ScatterPlotOfData;
+
+                    DistributionIdentifier = new DistributionIdentifier(dataFirstPoints, this.histogramModel, this.currentLengthOfClass);
+                }
                 OnPropertyChanged("DataFirstPoints");
+            }
+        }
+
+        public string FileName
+        {
+            get { return fileName; }
+            private set
+            {
+                fileName = value;
+                OnPropertyChanged("FileName");
             }
         }
 
@@ -106,11 +138,60 @@ namespace EMPI_Proj
             }
         }
 
+        public PlotModel ScatterAllDataModel
+        {
+            get { return scatterModel; }
+            private set
+            {
+                scatterModel = value;
+                scatterModel.InvalidatePlot(true);
+                OnPropertyChanged("ScatterAllDataModel");
+            }
+        }
+
+        public IEnumerable<AnomalyPointViewModel> AnomalyPointsViewModel
+        {
+            get { return anomalies; }
+            private set
+            {
+                anomalies = value;
+                OnPropertyChanged("AnomalyPointsViewModel");
+            }
+        }
+
+        public DistributionIdentifier DistributionIdentifier
+        {
+            get { return distributionIdentifier; }
+            private set
+            {
+                distributionIdentifier = value;
+                OnPropertyChanged("DistributionIdentifier");
+            }
+        }
+
+        public double ErrorForAnomalies
+        {
+            get { return errorForAnomalies; }
+            set
+            {
+                errorForAnomalies = value;
+                if (errorForAnomalies <= 0)
+                {
+                    errorForAnomalies = 0.01;
+                }
+                var dataFourthPoint = new DataFourthPoint(dataFirstPoints, errorForAnomalies);
+
+                AnomalyPointsViewModel = dataFourthPoint.Anomalies;
+                ScatterAllDataModel = dataFourthPoint.ScatterPlotOfData;
+                OnPropertyChanged("ErrorForAnomalies");
+            }
+        }
+
         public PlotModel CreateClassesChart()
         {
             var plotModel = new PlotModel();
             var xAxis = new OxyPlot.Axes.LinearAxis
-            { Title = "classRange", Position = AxisPosition.Bottom, LabelFormatter = (param) => param.ToString() };
+            { Title = "classRange", Position = AxisPosition.Bottom, LabelFormatter = (param) => Math.Round(param, 3).ToString() };
             plotModel.Axes.Add(xAxis);
 
             var yAxis = new OxyPlot.Axes.LinearAxis
@@ -127,6 +208,16 @@ namespace EMPI_Proj
             plotModel.Series.Add(barSeries);
             AddKDEToPlotModel(plotModel);
             return plotModel;
+        }
+
+        public void DeleteAnomalies()
+        {
+            if (this.AnomalyPointsViewModel != null)
+            {
+                  var rawData = DataFirstPoints.ElementAt(0).GetRawDataDistinct();
+
+                HandleRawDataProcess(rawData.Where(p => !AnomalyPointsViewModel.Any(p2 => Convert.ToDouble(p2.Value) == p)).ToList());
+            }
         }
 
         private void AddKDEToPlotModel(PlotModel plotModel)
@@ -221,12 +312,34 @@ namespace EMPI_Proj
             }
         }
 
+        public Visibility IsFivthPointVisible
+        {
+            get { return _isFivthPointVisible; }
+            set
+            {
+                _isFivthPointVisible = value;
+                OnPropertyChanged("IsFivthPointVisible");
+            }
+        }
+
+        public Visibility IsSixPointVisible
+        {
+            get { return _isSixPointVisible; }
+            set
+            {
+                _isSixPointVisible = value;
+                OnPropertyChanged("IsSixPointVisible");
+            }
+        }
+
         public void LoadFirstPoint()
         {
             IsFirstPointVisible = Visibility.Visible;
             IsSecondPointVisible = Visibility.Collapsed;
             IsThirdPointVisible = Visibility.Collapsed;
             IsFourthPointVisible = Visibility.Collapsed;
+            IsFivthPointVisible = Visibility.Collapsed;
+            IsSixPointVisible = Visibility.Collapsed;
         }
 
         public void LoadSecondPoint()
@@ -235,6 +348,8 @@ namespace EMPI_Proj
             IsSecondPointVisible = Visibility.Visible;
             IsThirdPointVisible = Visibility.Collapsed;
             IsFourthPointVisible = Visibility.Collapsed;
+            IsFivthPointVisible = Visibility.Collapsed;
+            IsSixPointVisible = Visibility.Collapsed;
         }
 
         public void LoadThirdPoint()
@@ -245,6 +360,8 @@ namespace EMPI_Proj
             this.NumberOfClasses = "0";
             this.Width = "0";
             IsFourthPointVisible = Visibility.Collapsed;
+            IsFivthPointVisible = Visibility.Collapsed;
+            IsSixPointVisible = Visibility.Collapsed;
         }
 
         public void LoadFourthPoint()
@@ -253,26 +370,68 @@ namespace EMPI_Proj
             IsSecondPointVisible = Visibility.Collapsed;
             IsThirdPointVisible = Visibility.Collapsed;
             IsFourthPointVisible = Visibility.Visible;
+            IsFivthPointVisible = Visibility.Collapsed;
+            IsSixPointVisible = Visibility.Collapsed;
+        }
+
+        public void LoadFifthPoint()
+        {
+            IsFirstPointVisible = Visibility.Collapsed;
+            IsSecondPointVisible = Visibility.Collapsed;
+            IsThirdPointVisible = Visibility.Collapsed;
+            IsFourthPointVisible = Visibility.Collapsed;
+            IsFivthPointVisible = Visibility.Visible;
+            IsSixPointVisible = Visibility.Collapsed;
+        }
+
+        public void LoadSixPoint()
+        {
+            IsFirstPointVisible = Visibility.Collapsed;
+            IsSecondPointVisible = Visibility.Collapsed;
+            IsThirdPointVisible = Visibility.Collapsed;
+            IsFourthPointVisible = Visibility.Collapsed;
+            IsFivthPointVisible = Visibility.Collapsed;
+            IsSixPointVisible = Visibility.Visible;
         }
 
         private void HandleRawDataProcess()
         {
             var OpenFileDialog = new OpenFileDialog();
+            this.width = "0";
+            this.numberOfClasses = "0";
             if (OpenFileDialog.ShowDialog() == true)
             {
                 var rawData = proceedFile(OpenFileDialog).OrderBy(el => el).ToList();
                 var rawDataDistinct = rawData.Distinct().ToList();
-                dataFirstPoints = new ObservableCollection<DataFirstPoint>();
+                var dataFirstPoints = new List<DataFirstPoint>();
                 for (int index = 0; index < rawDataDistinct.Count; index++)
                 {
-                    var previousEmpFunctionResult = dataFirstPoints.Count == 0 ?
+                    var previousEmpFunctionResult = dataFirstPoints.Count() == 0 ?
                         0 :
-                        dataFirstPoints[index - 1].EmpFunctionResult;
+                        dataFirstPoints.ElementAt(index - 1).EmpFunctionResult;
                     var currentPoint = new DataFirstPoint(rawData, rawDataDistinct, previousEmpFunctionResult, index);
                     dataFirstPoints.Add(currentPoint);
                 }
                 this.DataFirstPoints = dataFirstPoints;
             }
+        }
+
+        private void HandleRawDataProcess(IEnumerable<double> rawData)
+        {
+            var OpenFileDialog = new OpenFileDialog();
+            this.width = "0";
+            this.numberOfClasses = "0";
+            var rawDataDistinct = rawData.Distinct().ToList();
+            var dataFirstPoints = new List<DataFirstPoint>();
+            for (int index = 0; index < rawDataDistinct.Count(); index++)
+            {
+                var previousEmpFunctionResult = dataFirstPoints.Count() == 0 ?
+                    0 :
+                    dataFirstPoints.ElementAt(index - 1).EmpFunctionResult;
+                var currentPoint = new DataFirstPoint(rawData, rawDataDistinct, previousEmpFunctionResult, index);
+                dataFirstPoints.Add(currentPoint);
+            }
+            this.DataFirstPoints = dataFirstPoints;
         }
 
         private void loadDate()
@@ -281,27 +440,34 @@ namespace EMPI_Proj
             LoadFirstPoint();
         }
 
-        private IEnumerable<double> proceedFile(OpenFileDialog OpenFileDialog)
-        {
-            var rawDataStrings = File.ReadAllLines(OpenFileDialog.FileName).ToList();
-            return rawDataStrings.Select(s => s.Replace('.', ',')).Select(el => double.Parse(el));
-        }
         //private IEnumerable<double> proceedFile(OpenFileDialog OpenFileDialog)
         //{
-        //    List<double> result = new List<double>();
-        //    var fullPath = OpenFileDialog.FileName;
-        //    var rawDataStrings = File.ReadAllLines(fullPath).ToList();
-        //    if (fullPath.Contains(".DAT"))
-        //    {
-        //        foreach (var item in rawDataStrings)
-        //        {
-        //            var splitedValues = item.Split(".");
-        //        }
-        //    }
+        //    var rawDataStrings = File.ReadAllLines(OpenFileDialog.FileName).ToList();
         //    return rawDataStrings.Select(s => s.Replace('.', ',')).Select(el => double.Parse(el));
         //}
+        private IEnumerable<double> proceedFile(OpenFileDialog OpenFileDialog)
+        {
+            List<double> result = new List<double>();
+            var fullPath = OpenFileDialog.FileName;
+            FileName = fullPath;
+            var rawDataStrings = File.ReadAllLines(fullPath).ToList();
+            if (rawDataStrings.ElementAt(0).Split(" ").Length > 0)
+            {
+                List<string> listforStringsFromDAT = new List<string>();
+                foreach (var item in rawDataStrings)
+                {
+                    var splitedValues = item.Split(" ");
+                    foreach (var subitem in splitedValues)
+                    {
+                        listforStringsFromDAT.Add(subitem);
+                    }
+                }
+                return listforStringsFromDAT.Select(s => s.Replace('.', ',')).Select(el => double.Parse(el));
+            }
+            return rawDataStrings.Select(s => s.Replace('.', ',')).Select(el => double.Parse(el));
+        }
 
-    public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));

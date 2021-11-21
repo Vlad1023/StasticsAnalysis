@@ -100,6 +100,48 @@
             <DataGrid Visibility="{Binding IsFourthPointVisible}" FontSize="40px" ItemsSource="{Binding DataParameters}" Grid.Column="1">
 
             </DataGrid>
+            <!-- break -->
+            <Grid Visibility="{Binding IsFivthPointVisible}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80px"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition ></ColumnDefinition>
+                    <ColumnDefinition ></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Background="Aqua" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30px" Grid.Column="0">Error:</TextBlock>
+                    <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="1" FontSize="30px" Text="{Binding ErrorForAnomalies, Mode=TwoWay}"/>
+                    <Button Grid.Column="2" Command="{Binding DeleteAnomaliesDataCommand}" Grid.Row="0">
+                        <TextBlock>
+                            Delete anomalies
+                        </TextBlock>
+                    </Button>
+                </Grid>
+                <DataGrid Width="200px" Grid.Row="1" Grid.Column="1" FontSize="20px" ItemsSource="{Binding AnomalyPointsViewModel}">
+
+                </DataGrid>
+                <oxy:PlotView Width="1200" Grid.Row="1" Grid.Column="0"  Model="{Binding ScatterAllDataModel}" Background="AliceBlue"/>
+            </Grid>
+            <!-- break -->
+            <Grid Visibility="{Binding IsSixPointVisible}">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <DataGrid HorizontalAlignment="Center" Grid.Row="0"  FontSize="40px" ItemsSource="{Binding DistributionIdentifier.DistributionParams}">
+
+                </DataGrid>
+                <oxy:PlotView Grid.Row="1" Model="{Binding DistributionIdentifier.ModelForRenewedDensityFunction}" Background="AliceBlue"/>
+                <oxy:PlotView Grid.Row="2" Model="{Binding DistributionIdentifier.ModelForRenewedDistributionFunction}" Background="AliceBlue"/>
+            </Grid>
 
         </Grid>
         <Grid Grid.Column="0" Margin="10,10,10,0">
@@ -112,30 +154,45 @@
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
             </Grid.RowDefinitions>
             <Button Command="{Binding LoadDataCommand}" Grid.Row="0">
                 <TextBlock>
                     Загрузить данные
                 </TextBlock>
             </Button>
-            <Button Command="{Binding OpenFirstPointDataCommand}" Grid.Row="1">
+            <TextBlock Text="{Binding FileName}" FontSize="20" HorizontalAlignment="Center" Grid.Row="1">
+            </TextBlock>
+            <Button Command="{Binding OpenFirstPointDataCommand}" Grid.Row="21">
                 <TextBlock>
                     Пункт 1
                 </TextBlock>
             </Button>
-            <Button Command="{Binding OpenSecondPointDataCommand}" Grid.Row="2">
+            <Button Command="{Binding OpenSecondPointDataCommand}" Grid.Row="3">
                 <TextBlock>
                     Пункт 2
                 </TextBlock>
             </Button>
-            <Button Command="{Binding OpenThirdPointDataCommand}" Grid.Row="3">
+            <Button Command="{Binding OpenThirdPointDataCommand}" Grid.Row="4">
                 <TextBlock>
                     Пункт 3
                 </TextBlock>
             </Button>
-            <Button Command="{Binding OpenFourthPointDataCommand}" Grid.Row="4">
+            <Button Command="{Binding OpenFourthPointDataCommand}" Grid.Row="5">
                 <TextBlock>
                     Пункт 4
+                </TextBlock>
+            </Button>
+            <Button Command="{Binding OpenFifthPointDataCommand}" Grid.Row="6">
+                <TextBlock>
+                    Пункт 5
+                </TextBlock>
+            </Button>
+            <Button Command="{Binding OpenSixPointDataCommand}" Grid.Row="7">
+                <TextBlock>
+                    Пункт 6
                 </TextBlock>
             </Button>
         </Grid>
