@@ -27,6 +27,7 @@ namespace EMPI_Proj
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
+        private IEnumerable<double> rawData;
         private IEnumerable<DataFirstPoint> dataFirstPoints;
         private IEnumerable<DataSecondPoint> dataSecondPoints;
         private IEnumerable<DataThirdPointViewModel> dataParameters;
@@ -89,7 +90,7 @@ namespace EMPI_Proj
                     AnomalyPointsViewModel = dataFourthPoint.Anomalies;
                     ScatterAllDataModel = dataFourthPoint.ScatterPlotOfData;
 
-                    DistributionIdentifier = new DistributionIdentifier(dataFirstPoints, this.histogramModel, this.currentLengthOfClass);
+                    DistributionIdentifier = new DistributionIdentifier(dataFirstPoints, rawData, this.histogramModel, this.currentLengthOfClass);
                 }
                 OnPropertyChanged("DataFirstPoints");
             }
@@ -402,6 +403,7 @@ namespace EMPI_Proj
             if (OpenFileDialog.ShowDialog() == true)
             {
                 var rawData = proceedFile(OpenFileDialog).OrderBy(el => el).ToList();
+                this.rawData = rawData;
                 var rawDataDistinct = rawData.Distinct().ToList();
                 var dataFirstPoints = new List<DataFirstPoint>();
                 for (int index = 0; index < rawDataDistinct.Count; index++)
@@ -419,6 +421,7 @@ namespace EMPI_Proj
         private void HandleRawDataProcess(IEnumerable<double> rawData)
         {
             var OpenFileDialog = new OpenFileDialog();
+            this.rawData = rawData;
             this.width = "0";
             this.numberOfClasses = "0";
             var rawDataDistinct = rawData.Distinct().ToList();

@@ -12,139 +12,148 @@
             <Setter Property="Margin" Value="0, 10, 0, 0" />
         </Style>
     </Window.Resources>
-    <Grid Width="auto" Height="auto" Background="Green">
+    <ScrollViewer >
+        <Grid Width="auto" Height="auto" Background="Green">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+                <DataGrid Visibility="{Binding IsFirstPointVisible}" FontSize="20px" ItemsSource="{Binding DataFirstPoints}" Grid.Column="1">
 
-            <DataGrid Visibility="{Binding IsFirstPointVisible}" FontSize="20px" ItemsSource="{Binding DataFirstPoints}" Grid.Column="1">
-
-            </DataGrid>
-
+                </DataGrid>
 
 
-            <!-- break -->
 
-            <ext:SciChartInteractionToolbar Visibility="{Binding IsSecondPointVisible}" TargetSurface="{Binding Source={x:Reference Name=sciChart}}" />
-            <!--  Create the chart surface  -->
-            <s:SciChartSurface Visibility="{Binding IsSecondPointVisible}"
+                <!-- break -->
+
+                <ext:SciChartInteractionToolbar Visibility="{Binding IsSecondPointVisible}" TargetSurface="{Binding Source={x:Reference Name=sciChart}}" />
+                <!--  Create the chart surface  -->
+                <s:SciChartSurface Visibility="{Binding IsSecondPointVisible}"
                            Name="sciChart"
                            Grid.Column="1"
                            Padding="0"
                            BorderThickness="0">
 
-                <!--  Declare RenderableSeries  -->
-                <s:SciChartSurface.RenderableSeries>
-                    <s:FastLineRenderableSeries x:Name="lineRenderSeries"
+                    <!--  Declare RenderableSeries  -->
+                    <s:SciChartSurface.RenderableSeries>
+                        <s:FastLineRenderableSeries x:Name="lineRenderSeries"
                                             IsDigitalLine="True"
                                             Stroke="#FF99EE99"
                                             StrokeThickness="2" >
-                        <s:FastLineRenderableSeries.SeriesAnimation>
-                            <s:WaveAnimation AnimationDelay="0:0:1" Duration="0:0:1" PointDurationFraction="0.2" />
-                        </s:FastLineRenderableSeries.SeriesAnimation>
-                    </s:FastLineRenderableSeries>
-                </s:SciChartSurface.RenderableSeries>
+                            <s:FastLineRenderableSeries.SeriesAnimation>
+                                <s:WaveAnimation AnimationDelay="0:0:1" Duration="0:0:1" PointDurationFraction="0.2" />
+                            </s:FastLineRenderableSeries.SeriesAnimation>
+                        </s:FastLineRenderableSeries>
+                    </s:SciChartSurface.RenderableSeries>
 
-                <!--  Create an X Axis with GrowBy. Optional bands give a cool look and feel for minimal performance impact  -->
-                <s:SciChartSurface.XAxis>
-                    <s:NumericAxis DrawMajorBands="True"
+                    <!--  Create an X Axis with GrowBy. Optional bands give a cool look and feel for minimal performance impact  -->
+                    <s:SciChartSurface.XAxis>
+                        <s:NumericAxis DrawMajorBands="True"
                                GrowBy="0.1, 0.1"
                                VisibleRange="0, 10" />
-                </s:SciChartSurface.XAxis>
+                    </s:SciChartSurface.XAxis>
 
-                <!--  Create a Y Axis with GrowBy. Optional bands give a cool look and feel for minimal performance impact  -->
-                <s:SciChartSurface.YAxis>
-                    <s:NumericAxis DrawMajorBands="True"
+                    <!--  Create a Y Axis with GrowBy. Optional bands give a cool look and feel for minimal performance impact  -->
+                    <s:SciChartSurface.YAxis>
+                        <s:NumericAxis DrawMajorBands="True"
                                GrowBy="0.5, 0.5"
                                VisibleRange="-4, 4" />
-                </s:SciChartSurface.YAxis>
-            </s:SciChartSurface>
+                    </s:SciChartSurface.YAxis>
+                </s:SciChartSurface>
 
-            <!-- break -->
-            <Grid Visibility="{Binding IsThirdPointVisible}" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50px"/>
-                    <RowDefinition Height="50px"/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="3*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Background="Aqua" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30px" Grid.Column="0">Number of classes:</TextBlock>
-                    <TextBox Grid.Column="1" FontSize="30px" Text="{Binding NumberOfClasses, Mode=TwoWay}"/>
+                <!-- break -->
+                <Grid Visibility="{Binding IsThirdPointVisible}" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50px"/>
+                        <RowDefinition Height="50px"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Background="Aqua" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30px" Grid.Column="0">Number of classes:</TextBlock>
+                        <TextBox Grid.Column="1" FontSize="30px" Text="{Binding NumberOfClasses, Mode=TwoWay}"/>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Background="Aqua" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30px" Grid.Column="0">Width:</TextBlock>
+                        <TextBox Grid.Column="1" FontSize="30px" Text="{Binding Width, Mode=TwoWay}"/>
+                    </Grid>
+                    <DataGrid Width="auto" Grid.Row="2" FontSize="20px" ItemsSource="{Binding DataSecondPoints}">
+
+                    </DataGrid>
+                    <oxy:PlotView Grid.Row="3" x:Name ="Histogram" Model="{Binding HistogramModel}"  Background="AliceBlue"/>
                 </Grid>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="3*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Background="Aqua" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30px" Grid.Column="0">Width:</TextBlock>
-                    <TextBox Grid.Column="1" FontSize="30px" Text="{Binding Width, Mode=TwoWay}"/>
-                </Grid>
-                <DataGrid Width="auto" Grid.Row="2" FontSize="20px" ItemsSource="{Binding DataSecondPoints}">
+                <!-- break -->
+                <DataGrid Visibility="{Binding IsFourthPointVisible}" FontSize="40px" ItemsSource="{Binding DataParameters}" Grid.Column="1">
 
                 </DataGrid>
-                <oxy:PlotView Grid.Row="3" x:Name ="Histogram" Model="{Binding HistogramModel}"  Background="AliceBlue"/>
-            </Grid>
-            <!-- break -->
-            <DataGrid Visibility="{Binding IsFourthPointVisible}" FontSize="40px" ItemsSource="{Binding DataParameters}" Grid.Column="1">
-
-            </DataGrid>
-            <!-- break -->
-            <Grid Visibility="{Binding IsFivthPointVisible}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="80px"></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition ></ColumnDefinition>
-                    <ColumnDefinition ></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Row="0">
+                <!-- break -->
+                <Grid Visibility="{Binding IsFivthPointVisible}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80px"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
                         <ColumnDefinition ></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Background="Aqua" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30px" Grid.Column="0">Error:</TextBlock>
-                    <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="1" FontSize="30px" Text="{Binding ErrorForAnomalies, Mode=TwoWay}"/>
-                    <Button Grid.Column="2" Command="{Binding DeleteAnomaliesDataCommand}" Grid.Row="0">
-                        <TextBlock>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition ></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Background="Aqua" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30px" Grid.Column="0">Error:</TextBlock>
+                        <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="1" FontSize="30px" Text="{Binding ErrorForAnomalies, Mode=TwoWay}"/>
+                        <Button Grid.Column="2" Command="{Binding DeleteAnomaliesDataCommand}" Grid.Row="0">
+                            <TextBlock>
                             Delete anomalies
-                        </TextBlock>
-                    </Button>
+                            </TextBlock>
+                        </Button>
+                    </Grid>
+                    <DataGrid Width="200px" Grid.Row="1" Grid.Column="1" FontSize="20px" ItemsSource="{Binding AnomalyPointsViewModel}">
+
+                    </DataGrid>
+                    <oxy:PlotView Width="1200" Grid.Row="1" Grid.Column="0"  Model="{Binding ScatterAllDataModel}" Background="AliceBlue"/>
                 </Grid>
-                <DataGrid Width="200px" Grid.Row="1" Grid.Column="1" FontSize="20px" ItemsSource="{Binding AnomalyPointsViewModel}">
+                <!-- break -->
 
-                </DataGrid>
-                <oxy:PlotView Width="1200" Grid.Row="1" Grid.Column="0"  Model="{Binding ScatterAllDataModel}" Background="AliceBlue"/>
+                <Grid Visibility="{Binding IsSixPointVisible}">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1300px"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="300px"></RowDefinition>
+                        <RowDefinition Height="300px"></RowDefinition>
+                        <RowDefinition Height="300px"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Column="0" HorizontalAlignment="Center" Grid.Row="0"  FontSize="20px" ItemsSource="{Binding DistributionIdentifier.DistributionParams}">
+
+                    </DataGrid>
+                    <oxy:PlotView Grid.Column="0"  Grid.Row="1" Model="{Binding DistributionIdentifier.ModelForRenewedDensityFunction}" Background="AliceBlue"/>
+                    <oxy:PlotView Grid.Column="0"  Grid.Row="2" Model="{Binding DistributionIdentifier.ModelForRenewedDistributionFunction}" Background="AliceBlue"/>
+                    <oxy:PlotView Grid.Column="0"  Grid.Row="3" Model="{Binding DistributionIdentifier.ModelForProbabilityPaper}" Background="AliceBlue"/>
+
+                </Grid>
+
+
             </Grid>
-            <!-- break -->
-            <Grid Visibility="{Binding IsSixPointVisible}">
-                <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <DataGrid HorizontalAlignment="Center" Grid.Row="0"  FontSize="40px" ItemsSource="{Binding DistributionIdentifier.DistributionParams}">
-
-                </DataGrid>
-                <oxy:PlotView Grid.Row="1" Model="{Binding DistributionIdentifier.ModelForRenewedDensityFunction}" Background="AliceBlue"/>
-                <oxy:PlotView Grid.Row="2" Model="{Binding DistributionIdentifier.ModelForRenewedDistributionFunction}" Background="AliceBlue"/>
-            </Grid>
-
-        </Grid>
-        <Grid Grid.Column="0" Margin="10,10,10,0">
+            <Grid Grid.Column="0" Margin="10,10,10,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -157,7 +166,8 @@
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
-            </Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
             <Button Command="{Binding LoadDataCommand}" Grid.Row="0">
                 <TextBlock>
                     Загрузить данные
@@ -165,7 +175,7 @@
             </Button>
             <TextBlock Text="{Binding FileName}" FontSize="20" HorizontalAlignment="Center" Grid.Row="1">
             </TextBlock>
-            <Button Command="{Binding OpenFirstPointDataCommand}" Grid.Row="21">
+            <Button Command="{Binding OpenFirstPointDataCommand}" Grid.Row="2">
                 <TextBlock>
                     Пункт 1
                 </TextBlock>
@@ -195,6 +205,27 @@
                     Пункт 6
                 </TextBlock>
             </Button>
-        </Grid>
+            <Grid Grid.Row="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock FontSize="30px" Grid.Row="0" Text="{Binding DistributionIdentifier.DistributionResult.ZValue}">
+                        
+                    </TextBlock>
+                    <TextBlock FontSize="30px" Grid.Row="1" Text="{Binding DistributionIdentifier.DistributionResult.KZValue}">
+
+                    </TextBlock>
+                    <TextBlock FontSize="30px" Grid.Row="2" Text="{Binding DistributionIdentifier.DistributionResult.PValue}">
+
+                    </TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" FontSize="20px" Grid.Row="3" Text="{Binding DistributionIdentifier.DistributionResult.Result}">
+
+                    </TextBlock>
+                </Grid>
+            </Grid>
     </Grid>
+    </ScrollViewer>
 </Window>
